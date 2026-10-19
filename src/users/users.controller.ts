@@ -8,6 +8,6 @@ export class UsersController {
 
   @Post('/new')
   createNewUser(@Body() newUser: UserNewRequest) {
-    this.usersService.createNewUser(newUser);
+    return this.usersService.createNewUser(newUser);
   }
 }
