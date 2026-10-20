@@ -5,7 +5,11 @@ import { ConfigService } from '@nestjs/config';
 import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
+  const allowedOrigin = app.get(ConfigService).getOrThrow('ALLOWED_ORIGIN');
+  app.enableCors({
+    origin: [allowedOrigin],
+  });
   app.useLogger(app.get(Logger));
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   await app.listen(app.get(ConfigService).getOrThrow('PORT'));

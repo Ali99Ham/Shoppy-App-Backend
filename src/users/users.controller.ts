@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service.js';
 import { UserNewRequest } from './dto/create-user.dto.js';
 
@@ -7,6 +7,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post('/new')
+  // @UseInterceptors(NoFilesInterceptor())
   createNewUser(@Body() newUser: UserNewRequest) {
     return this.usersService.createNewUser(newUser);
   }

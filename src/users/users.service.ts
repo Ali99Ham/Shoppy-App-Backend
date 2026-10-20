@@ -1,7 +1,7 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { UserNewRequest } from './dto/create-user.dto.js';
 import { PrismaService } from '../prisma/prisma.service.js';
-import { User } from '../generated/prisma/client.js';
+import { Prisma } from '../generated/prisma/client.js';
 import bcrypt from 'bcrypt';
 
 @Injectable()
@@ -25,5 +25,11 @@ export class UsersService {
         throw new UnprocessableEntityException('Email already exists');
       throw err;
     }
+  }
+
+  async getUser(filter: Prisma.UserWhereUniqueInput) {
+    return this.prismaService.user.findUniqueOrThrow({
+      where: filter,
+    });
   }
 }
