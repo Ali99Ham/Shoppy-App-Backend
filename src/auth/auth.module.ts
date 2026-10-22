@@ -5,10 +5,11 @@ import { UsersModule } from '../users/users.module.js';
 import { LocalStrategy } from './strategies/local.strategy.js';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JWTStrategy } from './strategies/jwt.strategy.js';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy],
+  providers: [AuthService, LocalStrategy, JWTStrategy],
   imports: [
     UsersModule,
     JwtModule.registerAsync({
