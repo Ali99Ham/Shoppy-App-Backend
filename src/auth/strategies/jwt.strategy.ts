@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { HttpAdapterHost } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { TokenPayload } from '../token-payload.interface.js';
 
@@ -18,7 +17,7 @@ export class JWTStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(payload: TokenPayload): unknown {
-    throw payload;
+  validate(payload: TokenPayload): TokenPayload {
+    return payload;
   }
 }
