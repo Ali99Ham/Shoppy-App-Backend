@@ -6,10 +6,11 @@ import { Logger } from 'nestjs-pino';
 import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create(AppModule);
   const allowedOrigin = app.get(ConfigService).getOrThrow('ALLOWED_ORIGIN');
   app.enableCors({
     origin: [allowedOrigin],
+    credentials: true, // Allow cookies to be sent
   });
   app.useLogger(app.get(Logger));
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));

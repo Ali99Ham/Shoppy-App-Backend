@@ -44,6 +44,7 @@ export class AuthService {
       secure: true,
       httpOnly: true,
       expires,
+      path: '/',
     });
     return { tokenPayload };
   }
