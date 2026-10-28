@@ -4,6 +4,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
 import { AuthModule } from './auth/auth.module.js';
 import { ProductModule } from './product/product.module.js';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -31,6 +33,10 @@ import { ProductModule } from './product/product.module.js';
     UsersModule,
     AuthModule,
     ProductModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'public/product'),
+      serveRoot: '/product',
+    }),
   ],
   controllers: [],
   providers: [],

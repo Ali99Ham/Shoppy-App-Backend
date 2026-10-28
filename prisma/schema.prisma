@@ -24,6 +24,7 @@ model Product{
   name String @unique
   price Float
   description String
+  imageUrl String?
   userId Int
   user User @relation(fields: [userId], references: [id])
 }

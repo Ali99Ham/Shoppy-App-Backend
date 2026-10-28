@@ -4,7 +4,9 @@ import {
   FileTypeValidator,
   Get,
   MaxFileSizeValidator,
+  Param,
   ParseFilePipe,
+  ParseIntPipe,
   Post,
   UploadedFile,
   UseGuards,
@@ -38,27 +40,35 @@ export class ProductController {
     return this.productService.getProducts();
   }
 
+  @Post(':productID/image')
+  @UseGuards(JWTAuthGuard)
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
-        destination: '/public/product',
+        destination: './public/product',
         filename: (req, file, callback) => {
-          const uniqueName = `${req.params.productID}-${extname(file.originalname)}`;
+          const uniqueName = `${req.params.productID}${extname(file.originalname)}`;
           callback(null, uniqueName);
         },
       }),
     }),
   )
-  @Post(':productID/image')
-  uploadImage(
+  async uploadImage(
     @UploadedFile(
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({ maxSize: 500000 }),
-          new FileTypeValidator({ fileType: /^image\/(jpeg|png)$/ }),
+          new FileTypeValidator({
+            fileType: /^image\/(jpeg|jpg|png)$/,
+            skipMagicNumbersValidation: true, // Bypass buffer check since diskStorage is used
+          }),
         ],
       }),
     )
     file: Express.Multer.File,
-  ) {}
+    @Param('productID', ParseIntPipe) productID: number,
+  ) {
+    const imageUrl = `/product/${file.filename}`;
+    return this.productService.uploadImage(imageUrl, productID);
+  }
 }

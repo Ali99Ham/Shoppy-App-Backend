@@ -16,7 +16,21 @@ export class ProductService {
 
   async getProducts() {
     try {
-      return this.prisma.product.findMany();
-    } catch (e) {}
+      return await this.prisma.product.findMany();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async uploadImage(imageUrl: string, productID: number) {
+    console.log(imageUrl, productID);
+    try {
+      return await this.prisma.product.update({
+        where: { id: productID },
+        data: { imageUrl },
+      });
+    } catch (e) {
+      throw e;
+    }
   }
 }
