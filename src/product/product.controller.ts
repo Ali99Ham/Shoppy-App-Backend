@@ -71,4 +71,10 @@ export class ProductController {
     const imageUrl = `/product/${file.filename}`;
     return this.productService.uploadImage(imageUrl, productID);
   }
+
+  @Get(':productID')
+  @UseGuards(JWTAuthGuard)
+  async getProductByID(@Param('productID', ParseIntPipe) productID: number) {
+    return this.productService.getProductByID(productID);
+  }
 }
