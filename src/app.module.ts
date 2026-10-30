@@ -7,6 +7,7 @@ import { ProductModule } from './product/product.module.js';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { CheckoutModule } from './checkout/checkout.module.js';
+import { OrderModule } from './order/order.module.js';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { CheckoutModule } from './checkout/checkout.module.js';
       serveRoot: '/product',
     }),
     CheckoutModule,
+    OrderModule,
   ],
   controllers: [],
   providers: [],

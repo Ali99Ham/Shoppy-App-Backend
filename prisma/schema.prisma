@@ -42,7 +42,7 @@ model Order{
   id Int @default(autoincrement()) @id
   userId Int
   status PAYMENT_STATUS @default(PENDING)
-  total Decimal
+  total Decimal @db.Decimal(10,2)
   stripeSessionId String? @unique
   orderItems OrderItem[]
   user User @relation(fields: [userId], references: [id])

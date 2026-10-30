@@ -46,4 +46,14 @@ export class ProductService {
       throw e;
     }
   }
+
+  async getProductByIDs(ids: number[]) {
+    return this.prisma.product.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+  }
 }

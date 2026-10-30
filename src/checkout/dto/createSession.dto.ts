@@ -1,6 +1,8 @@
-import { IsNumber } from 'class-validator';
+import { ArrayNotEmpty, IsArray, IsInt } from 'class-validator';
 
 export class CreateCheckoutSessionDTO {
-  @IsNumber()
-  productId: number;
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsInt({ each: true })
+  productIds: number[];
 }

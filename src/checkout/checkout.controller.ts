@@ -3,6 +3,8 @@ import { JWTAuthGuard } from '../auth/guards/jwt.guard.js';
 import { CreateCheckoutSessionDTO } from './dto/createSession.dto.js';
 import { CheckoutService } from './checkout.service.js';
 import Stripe from 'stripe';
+import { CurrentUser } from '../auth/current-user.decorator.js';
+import { type TokenPayload } from '../auth/token-payload.interface.js';
 
 @Controller('checkout')
 export class CheckoutController {
@@ -12,8 +14,12 @@ export class CheckoutController {
   @UseGuards(JWTAuthGuard)
   async createCheckoutSession(
     @Body() request: CreateCheckoutSessionDTO,
+    @CurrentUser() user: TokenPayload,
   ): Promise<Stripe.Checkout.Session> {
-    return this.checkoutService.createCheckoutSession(request.productId);
+    return this.checkoutService.createCheckoutSession(
+      user.userId,
+      request.productIds,
+    );
   }
 
   @Post('webhook')

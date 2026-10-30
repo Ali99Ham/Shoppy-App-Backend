@@ -4,6 +4,7 @@ import { CheckoutService } from './checkout.service.js';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Stripe } from 'stripe';
 import { ProductModule } from '../product/product.module.js';
+import { OrderModule } from '../order/order.module.js';
 
 @Module({
   controllers: [CheckoutController],
@@ -16,6 +17,6 @@ import { ProductModule } from '../product/product.module.js';
       inject: [ConfigService],
     },
   ],
-  imports: [ConfigModule, ProductModule],
+  imports: [ConfigModule, ProductModule, OrderModule],
 })
 export class CheckoutModule {}

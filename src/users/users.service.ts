@@ -6,10 +6,10 @@ import bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
   async createNewUser(newUser: UserNewRequest) {
     try {
-      return await this.prismaService.user.create({
+      return await this.prisma.user.create({
         data: {
           email: newUser.email,
           password: await bcrypt.hash(newUser.password, 10),
@@ -28,7 +28,7 @@ export class UsersService {
   }
 
   async getUser(filter: Prisma.UserWhereUniqueInput) {
-    return this.prismaService.user.findUniqueOrThrow({
+    return this.prisma.user.findUniqueOrThrow({
       where: filter,
     });
   }
