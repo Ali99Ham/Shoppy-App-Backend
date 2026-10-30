@@ -15,4 +15,9 @@ export class CheckoutController {
   ): Promise<Stripe.Checkout.Session> {
     return this.checkoutService.createCheckoutSession(request.productId);
   }
+
+  @Post('webhook')
+  async handleCheckoutWebhook(@Body() event: any) {
+    return this.checkoutService.handleCheckoutWebhook(event);
+  }
 }

@@ -22,7 +22,7 @@ export class CheckoutService {
               product_data: {
                 name: product.name,
               },
-              unit_amount: product.price * 100,
+              unit_amount: product.price.mul(100).toNumber(),
             },
             quantity: 1,
           },
@@ -33,4 +33,6 @@ export class CheckoutService {
       });
     } else throw new NotFoundException('product not found');
   }
+
+  async handleCheckoutWebhook(event: any) {}
 }
