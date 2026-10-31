@@ -24,5 +24,6 @@ import { JWTStrategy } from './strategies/jwt.strategy.js';
     }),
     ConfigModule,
   ],
+  exports: [AuthService],
 })
 export class AuthModule {}

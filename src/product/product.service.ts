@@ -1,16 +1,22 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { NewProductDTO } from './dto/newProduct.dto.js';
 import { PrismaService } from '../prisma/prisma.service.js';
+import { ProductGateway } from './product.gateway.js';
 
 @Injectable()
 export class ProductService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly productGateway: ProductGateway,
+  ) {}
 
   async createProduct(body: NewProductDTO, userId: number) {
     try {
-      return await this.prisma.product.create({
+      const product = await this.prisma.product.create({
         data: { ...body, userId },
       });
+      this.productGateway.handleProductUpdated();
+      return product;
     } catch (e) {}
   }
 
@@ -48,10 +54,12 @@ export class ProductService {
   async uploadImage(imageUrl: string, productID: number) {
     console.log(imageUrl, productID);
     try {
-      return await this.prisma.product.update({
+      const product = await this.prisma.product.update({
         where: { id: productID },
         data: { imageUrl },
       });
+      this.productGateway.handleProductUpdated();
+      return product;
     } catch (e) {
       throw e;
     }
