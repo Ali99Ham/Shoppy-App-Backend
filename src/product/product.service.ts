@@ -14,9 +14,32 @@ export class ProductService {
     } catch (e) {}
   }
 
-  async getProducts() {
+  async getProducts(
+    name?: string,
+    price?: number,
+    userId?: number,
+    page: number = 1,
+    limit: number = 10,
+  ) {
     try {
-      return await this.prisma.product.findMany();
+      const skip = (page - 1) * limit;
+      const where = {
+        ...(name !== undefined && {
+          name: { contains: name },
+        }),
+        ...(price !== undefined && { price }),
+        ...(userId !== undefined && { userId }),
+        ...(price !== undefined && { price }),
+      };
+
+      return await this.prisma.product.findMany({
+        where,
+        take: limit,
+        skip: skip,
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
     } catch (e) {
       throw e;
     }

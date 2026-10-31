@@ -8,6 +8,7 @@ import {
   ParseFilePipe,
   ParseIntPipe,
   Post,
+  Query,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -20,6 +21,7 @@ import { ProductService } from './product.service.js';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { FilterProductDTO } from './dto/filterProduct.dto.js';
 
 @Controller('product')
 export class ProductController {
@@ -36,8 +38,9 @@ export class ProductController {
 
   @Get('all')
   @UseGuards(JWTAuthGuard)
-  async getProducts() {
-    return this.productService.getProducts();
+  async getProducts(@Query() query: FilterProductDTO) {
+    const { name, price, userId, page, limit } = query;
+    return this.productService.getProducts(name, price, userId, page, limit);
   }
 
   @Post(':productID/image')
